@@ -1,0 +1,8 @@
+requests==2.9.1
+pandas==0.17.1
+simple_salesforce==0.73.0
+unicodecsv==0.14.1
+matplotlib==1.5.1
+tensorflow==1.9.0
+numpy==1.11.0
+scikit_learn==0.19.2
