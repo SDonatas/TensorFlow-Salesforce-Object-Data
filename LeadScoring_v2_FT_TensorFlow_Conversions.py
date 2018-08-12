@@ -45,9 +45,9 @@ os.environ["LANG"] = "en_US.UTF-8"
 
 #NOTE TAKE CARE WHEN HOSTING THE SCRIPT, AS CREDENTIALS ARE NAKED
 #salesforce credentials
-username='v@travelallrussia.com'
-password='1AnwdjFOy7GFKFkTAb'
-organizationId='00D80000000L8c8'
+username=''
+password=''
+organizationId=''
 
 #salesforce query global settings
 sitename = "FT"
