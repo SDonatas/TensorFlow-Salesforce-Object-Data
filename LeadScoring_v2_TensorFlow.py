@@ -59,16 +59,16 @@ loop_sleep_seconds = 3600
 reevaluate_model_after_days = 30
 loop_timestamp_query_days = 5
 
-Query = "SELECT id, CreatedDate, Site__c, ConvertedOpportunityId, IsConverted, Session_count__c, Lead_score_change__c, Lead_score_timestamp__c, Lead_score_timestamp_2__c, Rating__c, IP_city__c, Country, Destination__c, Device__c, Division__c, Created_weekday__c, Last_session_source__c, LeadSource, Dates_since_sign_up__c, Email_CTOR__c, Email_Open__c, Engaged_with_chat__c, Engaged_with_form__c, HasOptedOutOfEmail, Have_you_been_to_this_destination_before__c, Last_session_min__c, Lead_profile_updated__c, Lead_survey_updated__c, New_visitor__c, Pages_last_session__c, Read_reviews__c, Sign_up_source__c, TotalEmailsOpened__c, TotalEmailsSent__c, TotalTimesOpened__c, TotalUniqueClicks__c, Total_pages__c, Total_time_min__c, utm_source__c, utm_term__c, RecordTypeId, Email, Price_per_day__c, status FROM Lead WHERE Site__c = '"+str(sitename) +"' AND CreatedDate > " + str(datetime.now() - timedelta(days=daynumber))[:10] + "T00:00:00Z" + " AND CreatedDate <= " + str(datetime.now() - timedelta(days=exlude_new_days))[:10] + "T23:59:59Z" + " ORDER BY CreatedDate DESC"
+Query = "SELECT id, CreatedDate, Description, Date_month__c, Site__c, ConvertedOpportunityId, IsConverted, Session_count__c, Lead_score_change__c, Lead_score_timestamp__c, Lead_score_timestamp_2__c, Rating__c, IP_city__c, Country, Destination__c, Device__c, Division__c, Created_weekday__c, Last_session_source__c, LeadSource, Dates_since_sign_up__c, Email_CTOR__c, Email_Open__c, Engaged_with_chat__c, Engaged_with_form__c, HasOptedOutOfEmail, Have_you_been_to_this_destination_before__c, Last_session_min__c, Lead_profile_updated__c, Lead_survey_updated__c, New_visitor__c, Pages_last_session__c, Read_reviews__c, Sign_up_source__c, TotalEmailsOpened__c, TotalEmailsSent__c, TotalTimesOpened__c, TotalUniqueClicks__c, Total_pages__c, Total_time_min__c, utm_source__c, utm_term__c, RecordTypeId, Email, Price_per_day__c, status FROM Lead WHERE Site__c = '"+str(sitename) +"' AND CreatedDate > " + str(datetime.now() - timedelta(days=daynumber))[:10] + "T00:00:00Z" + " AND CreatedDate <= " + str(datetime.now() - timedelta(days=exlude_new_days))[:10] + "T23:59:59Z" + " ORDER BY CreatedDate DESC"
 Query_opp = "SELECT id, IsWon, isLost__c from Opportunity WHERE Site__c = '"+str(sitename) +"' AND CreatedDate > " + str(datetime.now() - timedelta(days=daynumber))[:10] + "T00:00:00Z" + "AND id <> Null ORDER BY CreatedDate DESC"
-Query_loop = "SELECT id, CreatedDate, Site__c, ConvertedOpportunityId, IsConverted, Session_count__c, Lead_score_change__c, Lead_score_timestamp__c, Lead_score_timestamp_2__c, Rating__c, IP_city__c, Country, Destination__c, Device__c, Division__c, Created_weekday__c, Last_session_source__c, LeadSource, Dates_since_sign_up__c, Email_CTOR__c, Email_Open__c, Engaged_with_chat__c, Engaged_with_form__c, HasOptedOutOfEmail, Have_you_been_to_this_destination_before__c, Last_session_min__c, Lead_profile_updated__c, Lead_survey_updated__c, New_visitor__c, Pages_last_session__c, Read_reviews__c, Sign_up_source__c, TotalEmailsOpened__c, TotalEmailsSent__c, TotalTimesOpened__c, TotalUniqueClicks__c, Total_pages__c, Total_time_min__c, utm_source__c, utm_term__c, RecordTypeId, Email, Price_per_day__c, status FROM Lead WHERE Site__c = '"+str(sitename) +"' AND CreatedDate > " + str(datetime.now() - timedelta(days=daynumber))[:10] + "T00:00:00Z" + " AND CreatedDate <= " + str(datetime.now() - timedelta(days=exlude_new_days))[:10] + "T23:59:59Z" +" AND Lead_score_timestamp__c >= "+str(datetime.now() - timedelta(days=loop_timestamp_query_days))[:10] + "T23:59:59Z"+" AND IsConverted = False ORDER BY CreatedDate DESC"
+Query_loop = "SELECT id, CreatedDate, Description, Date_month__c, Site__c, ConvertedOpportunityId, IsConverted, Session_count__c, Lead_score_change__c, Lead_score_timestamp__c, Lead_score_timestamp_2__c, Rating__c, IP_city__c, Country, Destination__c, Device__c, Division__c, Created_weekday__c, Last_session_source__c, LeadSource, Dates_since_sign_up__c, Email_CTOR__c, Email_Open__c, Engaged_with_chat__c, Engaged_with_form__c, HasOptedOutOfEmail, Have_you_been_to_this_destination_before__c, Last_session_min__c, Lead_profile_updated__c, Lead_survey_updated__c, New_visitor__c, Pages_last_session__c, Read_reviews__c, Sign_up_source__c, TotalEmailsOpened__c, TotalEmailsSent__c, TotalTimesOpened__c, TotalUniqueClicks__c, Total_pages__c, Total_time_min__c, utm_source__c, utm_term__c, RecordTypeId, Email, Price_per_day__c, status FROM Lead WHERE Site__c = '"+str(sitename) +"' AND CreatedDate > " + str(datetime.now() - timedelta(days=daynumber))[:10] + "T00:00:00Z" + " AND CreatedDate <= " + str(datetime.now() - timedelta(days=exlude_new_days))[:10] + "T23:59:59Z" +" AND Lead_score_timestamp__c >= "+str(datetime.now() - timedelta(days=loop_timestamp_query_days))[:10] + "T23:59:59Z"+" AND IsConverted = False ORDER BY CreatedDate DESC"
 
 
 #*************  Mapping settings & Outlier specifications ***************************
 #Please note bellow mapping fields if eddited need to be edited within model also (only MapToNumbers, not Nomapping)
 
 MapToNumbers = ['Device__c',
-#'Destination__c', 
+'Destination__c', 
 'Country',
 'IP_city__c',                
 'Created_weekday__c', 
@@ -77,8 +77,9 @@ MapToNumbers = ['Device__c',
 'HasOptedOutOfEmail',
 'Have_you_been_to_this_destination_before__c', 
 'Sign_up_source__c',
-'utm_source__c',
-'utm_term__c',
+'Email',
+#'utm_source__c',
+#'utm_term__c',
 #'RecordTypeId'
                ] 
 
@@ -96,8 +97,19 @@ NoMapping= [
 'New_visitor__c',
 'Engaged_with_chat__c',
 'Engaged_with_form__c',
+'Date_month__c',
+'Description',
 'Price_per_day__c'
 ] 
+
+#Bellow is a field list for to deal with issue when algorithm is presented with mapped field names
+#Which were not learned yet. For example new destinations that simply do not have sample data with converted / not converted
+#Outcomes. This is not best approach, but field needs to be mapped to something in these scenarious. The its up to the
+#good judgement which field name within specific field captures very neutral performance
+
+
+NotLearnedItemErrorHandling = {"Destination__c":"Misc"}
+#Assumption above is that Misc will capture very neutral judgement
 
 #************************FUNCTIONS AND CLASES**********************************************************
 
@@ -136,7 +148,7 @@ class LeadScoring:
             self.data_opp = [[item for item in self.data_opp["records"][0].keys()][1:]] + [filtered_row[1:] for filtered_row in [[row for row in item.values()] for item in self.data_opp["records"]]]
 
         #numpy.isnan(number)
-        
+        #pd.DataFrame(self.data).to_csv("original_testing_pre_v17.csv")
         #Try to Convert to floats string numbers
         def process_data(data_to_process):
             logging.info("Processing SF Query Data...")
@@ -164,18 +176,26 @@ class LeadScoring:
                     elif type(x_item) == int:
                         data_to_process[Y_key][x_key] = float(data_to_process[Y_key][x_key])
                     
-                    #Process emtry strings
-                    elif x_item.strip() == "" or x_item.strip() == " ":
-                        data_to_process[Y_key][x_key] = "NO_DATA"
-                    
-                    elif x_item.isdigit():
-                        data_to_process[Y_key][x_key] = float(data_to_process[Y_key][x_key])
+                    #Process datetime
+                    elif type(x_item) == datetime:
+                    	pass
+
+           			#Process strings
+                    elif type(x_item) == str:
+	                    #Process emtry strings
+	                    if x_item.strip() == "" or x_item.strip() == " ":
+	                    	data_to_process[Y_key][x_key] = "NO_DATA"
+	                    elif x_item.isdigit():
+	                        data_to_process[Y_key][x_key] = float(data_to_process[Y_key][x_key])
+	                    else:
+	                    	pass
+
             logging.info("Processing SF Query Data... Done")
             return data_to_process
         
         self.data = process_data(self.data)
         self.data = pd.DataFrame(self.data[1:], columns=self.data[0])
-        #self.data.to_csv("original_testing_v2.csv")
+        #self.data.to_csv("original_testing_v17.csv")
        
         if stage == 'initial': 
             #Make opportunity object and later join to main leads
@@ -213,6 +233,23 @@ class LeadScoring:
         #This step will make sure only most frequent are being kept, while others simply labeled as NO_DATA
         
         #'IP_city__c'
+
+
+        Months_reframe = {"NO_DATA": 0,
+                         "01 - January": 1,
+                         "02 - February": 2,
+                         "03 - March": 3,
+                         "04 - April": 4,
+                         "05 - May": 5,
+                         "06 - June": 6,
+                         "07 - July": 7,
+                         "08 - August": 8,
+                         "09 - September": 9,
+                         "10 - October": 10,
+                         "11 - November": 11,
+                         "12 - December": 12                
+                        }
+
         
         def field_reframe(Reframe_field, Data_object, field, sample_size):
             logging.debug("Reframing field {} ...".format(str(field)))
@@ -264,8 +301,24 @@ class LeadScoring:
             self.Reframe_field['Country'] = dict()
             self.Reframe_field['Country'], self.data = field_reframe(self.Reframe_field['Country'], self.data, 'Country', 100)
             
-            self.Reframe_field['utm_term__c'] = dict()
-            self.Reframe_field['utm_term__c'], self.data = utm_term_reframe_separate(self.Reframe_field['utm_term__c'], self.data, 'utm_term__c')
+            self.data['Date_month__c'] = self.data['Date_month__c'].replace(Months_reframe)
+
+            self.data.loc[self.data['Description'].astype(str) != "NO_DATA", "Description"] = 1
+            self.data.loc[self.data['Description'].astype(str) == "NO_DATA", "Description"] = 0
+
+            self.Reframe_field['Email'] = dict()
+            self.data.Email = self.data.Email.str.split("@")
+            self.data.Email = self.data.Email.str[-1]
+            self.data.Email = self.data.Email.str.split(".")
+            self.data.Email = self.data.Email.str[0]
+            self.Reframe_field['Email'], self.data = field_reframe(self.Reframe_field['Email'], self.data, 'Email', 50)
+           
+
+            #print(self.data['Description'].unique())
+
+            #Disabled UTM
+            #self.Reframe_field['utm_term__c'] = dict()
+            #self.Reframe_field['utm_term__c'], self.data = utm_term_reframe_separate(self.Reframe_field['utm_term__c'], self.data, 'utm_term__c')
            
             #city_index = list(self.data.groupby(['IP_city__c'])['outcome'].sum().sort_values(ascending=False).head(100).index.values)
             #city_values = list(self.data.groupby(['IP_city__c'])['outcome'].sum().sort_values(ascending=False).head(100).values)
@@ -282,13 +335,25 @@ class LeadScoring:
                 return
             
             ItemsToReframe = {x:"NO_DATA" for x in list(self.leads['IP_city__c'].values) if x not in list(self.Reframe_field['IP_city__c'].keys())}
-            self.leads['IP_city__c'] = self.leads['IP_city__c'].replace(ItemsToReframe)
+            if len(ItemsToReframe) != 0:
+                self.leads['IP_city__c'] = self.leads['IP_city__c'].replace(ItemsToReframe)
             
             ItemsToReframe = {x:"NO_DATA" for x in list(self.leads['Country'].values) if x not in list(self.Reframe_field['Country'].keys())}
-            self.leads['Country'] = self.leads['Country'].replace(ItemsToReframe)
+            if len(ItemsToReframe) != 0:
+                self.leads['Country'] = self.leads['Country'].replace(ItemsToReframe)
             
-            self.Reframe_field['utm_term__c'] = dict()
-            self.Reframe_field['utm_term__c'], self.leads = utm_term_reframe_separate(self.Reframe_field['utm_term__c'], self.leads, 'utm_term__c')
+            self.leads['Date_month__c'] = self.leads['Date_month__c'].replace(Months_reframe)
+            
+            self.leads.loc[self.leads['Description'].astype(str) != "NO_DATA", "Description"] = 1
+            self.leads.loc[self.leads['Description'].astype(str) == "NO_DATA", "Description"] = 0
+
+            ItemsToReframe = {x:"NO_DATA" for x in list(self.leads['Email'].values) if x not in list(self.Reframe_field['Email'].keys())}
+            if len(ItemsToReframe) != 0:
+                self.leads['Email'] = self.leads['Email'].replace(ItemsToReframe)
+
+            #Disabled UTM Term
+            #self.Reframe_field['utm_term__c'] = dict()
+            #self.Reframe_field['utm_term__c'], self.leads = utm_term_reframe_separate(self.Reframe_field['utm_term__c'], self.leads, 'utm_term__c')
            
             
             
@@ -351,7 +416,16 @@ class LeadScoring:
             for key in self.data_map.keys():
                 logging.debug(key)
                 self.ReplaceWithoutMapping = {}
-                self.ReplaceWithoutMapping = {x:self.data_map[key]["NO_DATA"] for x in list(self.leads[key].values) if x not in list(self.data_map[key].keys())}
+                if "NO_DATA" in self.data_map[key].keys():
+                    self.ReplaceWithoutMapping = {x:self.data_map[key]["NO_DATA"] for x in list(self.leads[key].values) if x not in list(self.data_map[key].keys())}
+                else:
+                    self.ReplaceWithoutMapping = {x:self.data_map[key][NotLearnedItemErrorHandling[key]] for x in list(self.leads[key].values) if x not in list(self.data_map[key].keys())}
+                    if len(self.ReplaceWithoutMapping.keys()) > 0:
+                        logging.debug("NOTE: Using NotLearnedItemErrorHandling function for " + str(key))
+
+                    #assert "NO_DATA" not in list(self.leads[key].values)
+                    #assert len({x:x for x in list(self.leads[key].values) if x not in list(self.data_map[key].keys())}) == 0
+
                 self.leads[key] = self.leads[key].replace(self.data_map[key])
                 if len(self.ReplaceWithoutMapping.keys()) > 0:
                     self.leads[key] = self.leads[key].replace(self.ReplaceWithoutMapping)
@@ -359,48 +433,57 @@ class LeadScoring:
     
         logging.info("Mapping fields for {} stage".format(stage) + "...Done")
         
-    def outlier_specification(self, MapToNumbers, NoMapping):
+    def OutlierSpecification(self, MapToNumbers, NoMapping, stage = "initial"):
         
+        assert stage == "initial" or stage == "loop" or stage == 'All_leads'
+
         #To preserve model relatedness to training data, data to be predicted will need to adjere to outliers of training data
         #Outlier specification only needs to be runned once for initial testing, do not run on once model has been built
         
         logging.info("Running outlier specification...")
         
-        if hasattr(self, 'outlier_specification'):
-            pass
-        else:
-            self.outlier_specification = None
+        if stage == "initial":
+            if hasattr(self, 'outlier_specification'):
+                pass
+            else:
+                self.outlier_specification = None
 
-        self.outlier_specification = {"Device__c":{"min": self.data["Device__c"].min(), "max": self.data["Device__c"].max()},
-                                 #"Destination__c":{"min": self.data["Destination__c"].min(), "max": self.data["Destination__c"].max()},
-                                 "Country":{"min": self.data["Country"].min(), "max": self.data["Country"].max()},
-                                 "IP_city__c":{"min": self.data["IP_city__c"].min(), "max": self.data["IP_city__c"].max()},
-                                 "Created_weekday__c":{"min": self.data["Created_weekday__c"].min(), "max": self.data["Created_weekday__c"].max()},
-                                 "Last_session_source__c":{"min": self.data["Last_session_source__c"].min(), "max": self.data["Last_session_source__c"].max()},
-                                 "LeadSource":{"min": self.data["LeadSource"].min(), "max": self.data["LeadSource"].max()},
-                                 "HasOptedOutOfEmail":{"min": self.data["HasOptedOutOfEmail"].min(), "max": self.data["HasOptedOutOfEmail"].max()},
-                                 "Have_you_been_to_this_destination_before__c":{"min": self.data["Have_you_been_to_this_destination_before__c"].min(), "max": self.data["Have_you_been_to_this_destination_before__c"].max()},
-                                 "Sign_up_source__c":{"min": self.data["Sign_up_source__c"].min(), "max": self.data["Sign_up_source__c"].max()},
-                                 "utm_source__c":{"min": self.data["utm_source__c"].min(), "max": self.data["utm_source__c"].max()},
-                                 "utm_term__c":{"min": self.data["utm_term__c"].min(), "max": self.data["utm_term__c"].max()},
-                                 #"RecordTypeId":{"min": self.data["RecordTypeId"].min(), "max": self.data["RecordTypeId"].max()},
-                                }
+            self.outlier_specification = {"Device__c":{"min": self.data["Device__c"].min(), "max": self.data["Device__c"].max()},
+                                     "Destination__c":{"min": self.data["Destination__c"].min(), "max": self.data["Destination__c"].max()},
+                                     "Country":{"min": self.data["Country"].min(), "max": self.data["Country"].max()},
+                                     "IP_city__c":{"min": self.data["IP_city__c"].min(), "max": self.data["IP_city__c"].max()},
+                                     "Created_weekday__c":{"min": self.data["Created_weekday__c"].min(), "max": self.data["Created_weekday__c"].max()},
+                                     "Last_session_source__c":{"min": self.data["Last_session_source__c"].min(), "max": self.data["Last_session_source__c"].max()},
+                                     "LeadSource":{"min": self.data["LeadSource"].min(), "max": self.data["LeadSource"].max()},
+                                     "HasOptedOutOfEmail":{"min": self.data["HasOptedOutOfEmail"].min(), "max": self.data["HasOptedOutOfEmail"].max()},
+                                     "Have_you_been_to_this_destination_before__c":{"min": self.data["Have_you_been_to_this_destination_before__c"].min(), "max": self.data["Have_you_been_to_this_destination_before__c"].max()},
+                                     "Sign_up_source__c":{"min": self.data["Sign_up_source__c"].min(), "max": self.data["Sign_up_source__c"].max()},
+                                     "Email":{"min": self.data["Email"].min(), "max": self.data["Email"].max()},
+                                     #"utm_source__c":{"min": self.data["utm_source__c"].min(), "max": self.data["utm_source__c"].max()},
+                                     #"utm_term__c":{"min": self.data["utm_term__c"].min(), "max": self.data["utm_term__c"].max()},
+                                     #"RecordTypeId":{"min": self.data["RecordTypeId"].min(), "max": self.data["RecordTypeId"].max()},
+                                    }
 
 
+            
+            for x in NoMapping:
+                self.outlier_specification[x] = {}    
+                print(x)
+
+                #Bellow replacing values for none types to zeros
+                #This is appropriate for fields selected, since 0 indicates for filled data set as generally less positive value
+
+                self.data[x] = self.data[x].replace("NO_DATA", 0.0)
+
+                self.outlier_specification[x]["min"] = self.data[x].min()
+                self.outlier_specification[x]["max"] = self.data[x].mean() + (2 * self.data[x].std()) 
         
-        for x in NoMapping:
-            self.outlier_specification[x] = {}    
-            print(x)
+        elif stage == "All_leads" or stage == "loop":
+            for x in NoMapping:
+                self.leads[x] = self.leads[x].replace("NO_DATA", 0.0)
 
-            #Bellow replacing values for none types to zeros
-            #This is appropriate for fields selected, since 0 indicates for filled data set as generally less positive value
 
-            self.data[x] = self.data[x].replace("NO_DATA", 0.0)
-            self.leads[x] = self.leads[x].replace("NO_DATA", 0.0)
 
-            self.outlier_specification[x]["min"] = self.data[x].min()
-            self.outlier_specification[x]["max"] = self.data[x].mean() + (2 * self.data[x].std()) 
-    
         logging.info("Running outlier specification... Done")
     
     def runmodel(self, stage="initial"):
@@ -503,7 +586,12 @@ class LeadScoring:
                 if self.leads['Id'].iloc[row] not in writtenleads:
                     try:
                         logging.debug(self.sf.Lead.update(self.leads['Id'].iloc[row],{'Lead_score_change__c': str(round(value_to_push, 2))}))
-                        logging.debug(self.sf.Lead.update(self.leads['Id'].iloc[row],{'Lead_score_timestamp_2__c': self.leads['Lead_score_timestamp__c'].iloc[row]}))
+                        if self.leads['Lead_score_timestamp__c'].iloc[row] == "NO_DATA":
+                        	#logging.debug(self.sf.Lead.update(self.leads['Id'].iloc[row],{'Lead_score_timestamp_2__c': None}))
+                        	pass
+                        else:
+                        	logging.debug(self.sf.Lead.update(self.leads['Id'].iloc[row],{'Lead_score_timestamp_2__c': self.leads['Lead_score_timestamp__c'].iloc[row]}))
+                        	sleep(3)
                         #Append wrote leads to a file for future reference
                         with open(script_path + "InProgressWrittenLeads/" + "written_leads.csv", "a", encoding="UTF-8", newline='') as openfile:
                             wr = csv.writer(openfile)
@@ -548,17 +636,18 @@ class Looper:
         self.LeadScoring.QueryData(Query)
         self.LeadScoring.Reframe_data_optional()
         self.LeadScoring.mapfields(MapToNumbers, NoMapping, ['outcome'])
-        self.LeadScoring.outlier_specification(MapToNumbers, NoMapping)
+        self.LeadScoring.OutlierSpecification(MapToNumbers, NoMapping, "initial")
         self.LeadScoring.runmodel()
         logging.info("Looper: Initiating model... Done")
         
-        
+
     def ScoreAllHistoricLeadsLeads(self):
         
         #Run bulk update on not converted leads NOTEL still need to add query filter to catch only not populated score fields only
         logging.info("Looper: Scoring historic leads...")
         self.LeadScoring.Reframe_data_optional("All_leads")
         self.LeadScoring.mapfields(MapToNumbers, NoMapping, ['outcome'], "All_leads")
+        self.LeadScoring.OutlierSpecification(MapToNumbers, NoMapping, "All_leads")
         self.LeadScoring.runmodel("All_leads")
         logging.info("Looper: Scoring historic leads... Done")
         self.HistoricScored == True
@@ -582,6 +671,7 @@ class Looper:
                 self.LeadScoring.QueryData(Query_loop, Query_opp = None, stage="loop", sitename=sitename)
                 self.LeadScoring.Reframe_data_optional('loop')
                 self.LeadScoring.mapfields(MapToNumbers, NoMapping, ['outcome'], "loop")
+                self.LeadScoring.OutlierSpecification(MapToNumbers, NoMapping, "loop")
                 self.LeadScoring.runmodel("loop")
                 logging.info("Looper: Scoring changed leads...")
         
